@@ -3,11 +3,14 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.all_ratings
     if params[:ratings] != nil #filtro
+      @ratings = params[:ratings]
       @movies = Movie.where(:rating => params[:ratings].keys)
     elsif params[:commit] == nil #todos
       @movies = Movie.all
+      @ratings = Hash.new {|h,k| h[k]=[]}
     else #nenhum
       @movies = []
+      @ratings = Hash.new
     end
 
     if params[:sort_by] != nil
