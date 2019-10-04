@@ -1,13 +1,15 @@
 # This file is app/controllers/movies_controller.rb
 class MoviesController < ApplicationController
   def index
-    @movies = Movie.all
     @all_ratings = Movie.all_ratings
-    if params[:ratings] != nil
+    if params[:ratings] != nil #filtro
       @movies = Movie.where(:rating => params[:ratings].keys)
-    else
+    elsif params[:commit] == nil #todos
+      @movies = Movie.all
+    else #nenhum
       @movies = []
     end
+
     if params[:sort_by] != nil
       @movies = @movies.sort_by { |movie| eval("movie." + params[:sort_by])}
     end
