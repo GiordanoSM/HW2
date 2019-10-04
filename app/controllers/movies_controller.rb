@@ -1,7 +1,22 @@
 # This file is app/controllers/movies_controller.rb
 class MoviesController < ApplicationController
   def index
-    @movies = Movie.all.sort_by { |movie| eval("movie." + params[:sort_by])}
+    @all_ratings = Movie.all_ratings
+    if params[:ratings] != nil #filtro
+      @ratings = params[:ratings]
+      @movies = Movie.where(:rating => params[:ratings].keys)
+    elsif params[:commit] == nil #todos
+      @movies = Movie.all
+      @ratings = Hash.new {|h,k| h[k]=[]}
+    else #nenhum
+      @movies = []
+      @ratings = Hash.new
+    end
+
+    if params[:sort_by] != nil
+      @movies = @movies.sort_by { |movie| eval("movie." + params[:sort_by])}
+    end
+
   end
 
   def show
