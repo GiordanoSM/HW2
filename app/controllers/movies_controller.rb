@@ -1,8 +1,12 @@
 # This file is app/controllers/movies_controller.rb
 class MoviesController < ApplicationController
   def index
-    @movies = Movie.all.sort_by { |movie| eval("movie." + params[:sort_by])}
+    @movies = Movie.all
+    if params[:sort_by] != nil
+      @movies = @movies.sort_by { |movie| eval("movie." + params[:sort_by])}
+    end
     @all_ratings = Movie.all_ratings
+
   end
 
   def show
