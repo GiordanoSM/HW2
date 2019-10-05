@@ -7,11 +7,9 @@ class MoviesController < ApplicationController
     if params[:ratings] != nil #filtro
       @ratings = params[:ratings] #
       @movies = Movie.where(:rating => params[:ratings].keys)
-
-    ### caso uso de sessions
-    #elsif session[:ratings] != nil 
-      #@movies = Movie.where(:rating => session[:ratings].keys)
-
+    elsif (session[:ratings] != nil) && (params[:commit] == nil)
+      @ratings = session[:ratings]
+      @movies = Movie.where(:rating => session[:ratings].keys)
     else #todos
       @movies = Movie.all
       @ratings = Hash.new {|h,k| h[k]=[]}
@@ -20,24 +18,23 @@ class MoviesController < ApplicationController
       end
     end
 
-    @sort = params[:sort_by]
-    if params[:sort_by] != nil
+    if (params[:sort_by] != nil) && (params[:sort_by] != "")
       @movies = @movies.sort_by { |movie| eval("movie." + params[:sort_by])}
 
-    #elsif session[:sort_by] != nil
-     # @movies = @movies.sort_by { |movie| eval("movie." + session[:sort_by])}
+    elsif (session[:sort_by] != nil ) && (session[:sort_by] != "")
+      @movies = @movies.sort_by { |movie| eval("movie." + session[:sort_by])}
 
     end
 
 
-    ### caso uso de sessions / coockies
-    #if params[:sort_by] != nil
-      #session[:sort_by] = params[:sort_by]
-    #end
-    #if params[:ratings] != nil
-      #session[:ratings] = params[:ratings]
-    #end
-    # Redirect sem uso
+    ### caso uso de sessions
+    if params[:sort_by] != nil
+      session[:sort_by] = params[:sort_by]
+    end
+    if params[:ratings] != nil
+      session[:ratings] = params[:ratings]
+    end
+    # Redirect não usado
         #redirect_to movies_path(:sort_by=>session[:sort_by], :ratings=>session[:ratings])
 
     #end
