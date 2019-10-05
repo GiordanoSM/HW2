@@ -1,6 +1,8 @@
 # This file is app/controllers/movies_controller.rb
 class MoviesController < ApplicationController
   def index
+    @css = 'hilite'
+
     @all_ratings = Movie.all_ratings
     if params[:ratings] != nil #filtro
       @ratings = params[:ratings] #
