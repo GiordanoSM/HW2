@@ -3,15 +3,13 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.all_ratings
     if params[:ratings] != nil #filtro
-      @ratings = params[:ratings]
+      @ratings = params[:ratings] #
       @movies = Movie.where(:rating => params[:ratings].keys)
+
     ### caso uso de sessions
     #elsif session[:ratings] != nil 
-     # @ratings = session[:ratings]
       #@movies = Movie.where(:rating => session[:ratings].keys)
-    elsif (params[:commit] != nil)  #nenhum
-      @movies = []
-      @ratings = Hash.new
+
     else #todos
       @movies = Movie.all
       @ratings = Hash.new {|h,k| h[k]=[]}
@@ -23,8 +21,10 @@ class MoviesController < ApplicationController
     @sort = params[:sort_by]
     if params[:sort_by] != nil
       @movies = @movies.sort_by { |movie| eval("movie." + params[:sort_by])}
+
     #elsif session[:sort_by] != nil
      # @movies = @movies.sort_by { |movie| eval("movie." + session[:sort_by])}
+
     end
 
 
@@ -35,10 +35,9 @@ class MoviesController < ApplicationController
     #if params[:ratings] != nil
       #session[:ratings] = params[:ratings]
     #end
-    #if (params[:sort_by] == nil) || (params[:ratings] == nil)
-      #if !((params[:sort_by] == nil) && (params[:ratings] == nil) && (params[:commit] == nil))
+    # Redirect sem uso
         #redirect_to movies_path(:sort_by=>session[:sort_by], :ratings=>session[:ratings])
-      #end
+
     #end
 
   end
