@@ -7,7 +7,7 @@ class MoviesController < ApplicationController
     if params[:ratings] != nil #filtro
       @ratings = params[:ratings] #
       @movies = Movie.where(:rating => params[:ratings].keys)
-    elsif session[:ratings] != nil
+    elsif (session[:ratings] != nil) && (params[:commit] == nil)
       @ratings = session[:ratings]
       @movies = Movie.where(:rating => session[:ratings].keys)
     else #todos
@@ -18,11 +18,10 @@ class MoviesController < ApplicationController
       end
     end
 
-    @sort = params[:sort_by]
-    if params[:sort_by] != nil
+    if (params[:sort_by] != nil) && (params[:sort_by] != "")
       @movies = @movies.sort_by { |movie| eval("movie." + params[:sort_by])}
 
-    elsif session[:sort_by] != nil
+    elsif (session[:sort_by] != nil ) && (session[:sort_by] != "")
       @movies = @movies.sort_by { |movie| eval("movie." + session[:sort_by])}
 
     end
