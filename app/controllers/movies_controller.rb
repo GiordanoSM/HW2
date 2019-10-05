@@ -5,17 +5,38 @@ class MoviesController < ApplicationController
     if params[:ratings] != nil #filtro
       @ratings = params[:ratings]
       @movies = Movie.where(:rating => params[:ratings].keys)
-    elsif params[:commit] == nil #todos
-      @movies = Movie.all
-      @ratings = Hash.new {|h,k| h[k]=[]}
-    else #nenhum
+    ### caso uso de sessions
+    #elsif session[:ratings] != nil 
+     # @ratings = session[:ratings]
+      #@movies = Movie.where(:rating => session[:ratings].keys)
+    elsif (params[:commit] != nil)  #nenhum
       @movies = []
       @ratings = Hash.new
+    else #todos
+      @movies = Movie.all
+      @ratings = Hash.new {|h,k| h[k]=[]}
     end
 
+    @sort = params[:sort_by]
     if params[:sort_by] != nil
-      @movies = @movies.sort_by { |movie| eval("movie." + params[:sort_by])}
+      @movies = @movies.sort_by { |movie| eval("movie." + @sort)}
+    #elsif session[:sort_by] != nil
+     # @movies = @movies.sort_by { |movie| eval("movie." + session[:sort_by])}
     end
+
+
+    ### caso uso de sessions / coockies
+    #if params[:sort_by] != nil
+      #session[:sort_by] = params[:sort_by]
+    #end
+    #if params[:ratings] != nil
+      #session[:ratings] = params[:ratings]
+    #end
+    #if (params[:sort_by] == nil) || (params[:ratings] == nil)
+      #if !((params[:sort_by] == nil) && (params[:ratings] == nil) && (params[:commit] == nil))
+        #redirect_to movies_path(:sort_by=>session[:sort_by], :ratings=>session[:ratings])
+      #end
+    #end
 
   end
 
