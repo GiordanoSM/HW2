@@ -15,11 +15,14 @@ class MoviesController < ApplicationController
     else #todos
       @movies = Movie.all
       @ratings = Hash.new {|h,k| h[k]=[]}
+      @all_ratings.each do |rating|
+        @ratings[rating] = true
+      end
     end
 
     @sort = params[:sort_by]
     if params[:sort_by] != nil
-      @movies = @movies.sort_by { |movie| eval("movie." + @sort)}
+      @movies = @movies.sort_by { |movie| eval("movie." + params[:sort_by])}
     #elsif session[:sort_by] != nil
      # @movies = @movies.sort_by { |movie| eval("movie." + session[:sort_by])}
     end
