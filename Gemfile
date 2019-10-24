@@ -38,6 +38,10 @@ gem 'jbuilder', '~> 2.5'
 #PRA WINDOWS
 gem 'wdm', '>= 0.1.0'
 
+gem 'cucumber'
+
+gem 'cucumber-rails', require: false
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
